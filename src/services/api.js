@@ -20,6 +20,19 @@ const setStoredUsers = (users) => {
   }
 };
 
+export const register = async (email, password) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/register`, { email, password });
+    if (!response.data.token) {
+      throw new Error('No token received');
+    }
+    return response.data.token;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error.response?.data?.error || 'Registration failed';
+  }
+};
+
 export const createUser = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/users`, userData);
