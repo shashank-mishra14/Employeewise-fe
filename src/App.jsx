@@ -1,17 +1,21 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import UserList from './components/UserList';
 import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
 
 function App() {
   const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('token');
-    return token ? children : <Navigate to="/" />;
+    return token ? children : <Navigate to="/login" replace />;
   };
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route
         path="/users"
         element={
@@ -28,6 +32,15 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/add-user"
+        element={
+          <PrivateRoute>
+            <AddUser />
+          </PrivateRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
